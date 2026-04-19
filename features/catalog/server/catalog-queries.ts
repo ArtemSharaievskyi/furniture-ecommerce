@@ -9,6 +9,7 @@ import type {
   CatalogFilterOptions,
   CatalogItem,
   CatalogPageData,
+  ProductDetail,
   CatalogSort,
 } from "../types";
 
@@ -102,6 +103,43 @@ function buildStockLabel(stockQuantity: number) {
   }
 
   return "In stock";
+}
+
+function buildCatalogItem(product: {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string | null;
+  description: string;
+  material: string | null;
+  color: string | null;
+  size: string | null;
+  priceCents: number;
+  currencyCode: string;
+  isFeatured: boolean;
+  stockQuantity: number;
+  category: { name: string };
+  images: { url: string }[];
+  variants: { id: string }[];
+}): CatalogItem {
+  return {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    shortDescription: product.shortDescription,
+    description: product.description,
+    category: product.category.name,
+    material: product.material ?? "Material pending",
+    color: product.color ?? "Color pending",
+    size: product.size ?? "Size pending",
+    price: formatCurrency(product.priceCents, product.currencyCode),
+    imageUrl:
+      product.images[0]?.url ??
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80",
+    isFeatured: product.isFeatured,
+    variantCount: product.variants.length,
+    stockLabel: buildStockLabel(product.stockQuantity),
+  };
 }
 
 export async function getCatalogPageData(
@@ -200,24 +238,7 @@ export async function getCatalogPageData(
       }),
     ]);
 
-  const catalogItems: CatalogItem[] = products.map((product) => ({
-    id: product.id,
-    slug: product.slug,
-    name: product.name,
-    shortDescription: product.shortDescription,
-    description: product.description,
-    category: product.category.name,
-    material: product.material ?? "Material pending",
-    color: product.color ?? "Color pending",
-    size: product.size ?? "Size pending",
-    price: formatCurrency(product.priceCents, product.currencyCode),
-    imageUrl:
-      product.images[0]?.url ??
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80",
-    isFeatured: product.isFeatured,
-    variantCount: product.variants.length,
-    stockLabel: buildStockLabel(product.stockQuantity),
-  }));
+  const catalogItems: CatalogItem[] = products.map(buildCatalogItem);
 
   const options: CatalogFilterOptions = {
     categories,
@@ -265,5 +286,122 @@ export async function getCatalogPageData(
     products: catalogItems,
     options,
     total,
+  };
+}
+
+export async function getProductPageData(
+  slug: string,
+): Promise<{ product: ProductDetail; relatedProducts: CatalogItem[] } | null> {
+  const product = await prisma.product.findFirst({
+    where: {
+      slug,
+      status: "ACTIVE",
+    },
+    include: {
+      category: {
+        select: { id: true, name: true, slug: true },
+      },
+      images: {
+        orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
+      },
+      variants: {
+        orderBy: [{ isDefault: "desc" }, { priceCents: "asc" }],
+      },
+    },
+  });
+
+  if (!product) {
+    return null;
+  }
+
+  const resolvedDefaultVariant =
+    product.variants.find((variant) => variant.isDefault) ?? product.variants[0] ?? null;
+
+  const related = await prisma.product.findMany({
+    where: {
+      status: "ACTIVE",
+      categoryId: product.categoryId,
+      id: { not: product.id },
+    },
+    take: 4,
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+    include: {
+      category: { select: { name: true } },
+      images: {
+        orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
+        take: 1,
+      },
+      variants: {
+        select: { id: true },
+      },
+    },
+  });
+
+  const detail: ProductDetail = {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    category: product.category.name,
+    description: product.description,
+    shortDescription: product.shortDescription,
+    material: product.material ?? "Material pending",
+    color: product.color ?? "Color pending",
+    size: product.size ?? "Size pending",
+    price: formatCurrency(product.priceCents, product.currencyCode),
+    isFeatured: product.isFeatured,
+    stockLabel: buildStockLabel(product.stockQuantity),
+    images: product.images.map((image) => ({
+      id: image.id,
+      url: image.url,
+      altText: image.altText,
+      isPrimary: image.isPrimary,
+    })),
+    variants: product.variants.map((variant) => ({
+      id: variant.id,
+      name: variant.name,
+      sku: variant.sku,
+      color: variant.color ?? "",
+      size: variant.size ?? "",
+      material: variant.material ?? product.material ?? "Material pending",
+      stockQuantity: variant.stockQuantity,
+      stockLabel: buildStockLabel(variant.stockQuantity),
+      isDefault: variant.isDefault,
+      price: formatCurrency(variant.priceCents, product.currencyCode),
+    })),
+    defaultVariant: resolvedDefaultVariant
+      ? {
+          id: resolvedDefaultVariant.id,
+          name: resolvedDefaultVariant.name,
+          sku: resolvedDefaultVariant.sku,
+          color: resolvedDefaultVariant.color ?? "",
+          size: resolvedDefaultVariant.size ?? "",
+          material:
+            resolvedDefaultVariant.material ??
+            product.material ??
+            "Material pending",
+          stockQuantity: resolvedDefaultVariant.stockQuantity,
+          stockLabel: buildStockLabel(resolvedDefaultVariant.stockQuantity),
+          isDefault: resolvedDefaultVariant.isDefault,
+          price: formatCurrency(
+            resolvedDefaultVariant.priceCents,
+            product.currencyCode,
+          ),
+        }
+      : null,
+    specifications: [
+      { label: "Category", value: product.category.name },
+      { label: "Material", value: product.material ?? "Pending" },
+      { label: "Base color", value: product.color ?? "Pending" },
+      { label: "Primary size", value: product.size ?? "Pending" },
+      { label: "Variants", value: `${product.variants.length}` },
+      { label: "Availability", value: buildStockLabel(product.stockQuantity) },
+      { label: "SKU", value: product.sku },
+      { label: "Status", value: product.isFeatured ? "Featured Active" : "Active" },
+    ],
+  };
+
+  return {
+    product: detail,
+    relatedProducts: related.map(buildCatalogItem),
   };
 }

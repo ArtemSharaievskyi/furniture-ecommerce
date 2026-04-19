@@ -60,3 +60,47 @@ export type CatalogPageData = {
   options: CatalogFilterOptions;
   total: number;
 };
+
+export type ProductImageItem = {
+  id: string;
+  url: string;
+  altText: string | null;
+  isPrimary: boolean;
+};
+
+export type ProductVariantItem = {
+  id: string;
+  name: string;
+  sku: string;
+  color: string;
+  size: string;
+  material: string;
+  stockQuantity: number;
+  stockLabel: string;
+  isDefault: boolean;
+  price: string;
+};
+
+export type ProductSpecification = {
+  label: string;
+  value: string;
+};
+
+export type ProductDetail = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  description: string;
+  shortDescription: string | null;
+  material: string;
+  color: string;
+  size: string;
+  price: string;
+  isFeatured: boolean;
+  stockLabel: string;
+  images: ProductImageItem[];
+  variants: ProductVariantItem[];
+  defaultVariant: ProductVariantItem | null;
+  specifications: ProductSpecification[];
+};

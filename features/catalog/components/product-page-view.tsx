@@ -1,4 +1,10 @@
+import Link from "next/link";
+import { ArrowLeftIcon } from "lucide-react";
+
+import { FadeIn } from "@/components/motion/fade-in";
+import { PageHero } from "@/components/shared/page-hero";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,72 +12,134 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { CatalogProduct } from "@/lib/types";
+import { Separator } from "@/components/ui/separator";
+import type { CatalogItem, ProductDetail } from "@/features/catalog/types";
+import { cn } from "@/lib/utils";
 
-export function ProductPageView({ product }: { product: CatalogProduct }) {
+import { CatalogProductCard } from "./catalog-product-card";
+import { ProductGallery } from "./product-gallery";
+import { ProductPurchasePanel } from "./product-purchase-panel";
+
+export function ProductPageView({
+  product,
+  relatedProducts,
+}: {
+  product: ProductDetail;
+  relatedProducts: CatalogItem[];
+}) {
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-16">
-      <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="aspect-[5/4] rounded-[2rem] border border-border/70 bg-[linear-gradient(135deg,_rgba(235,230,221,0.92),_rgba(160,136,110,0.52))]" />
-        <div className="flex flex-col gap-5">
-          <Badge variant="secondary">{product.category}</Badge>
-          <div>
-            <h1 className="font-heading text-5xl tracking-tight text-foreground">
-              {product.name}
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {product.tagline}
+    <div className="pb-20">
+      <PageHero
+        eyebrow={product.category}
+        title={product.name}
+        description={product.shortDescription || product.description}
+        actions={
+          <Link
+            href="/catalog"
+            className={cn(buttonVariants({ variant: "outline" }))}
+          >
+            <ArrowLeftIcon data-icon="inline-start" />
+            Back to catalog
+          </Link>
+        }
+        className="pb-6"
+      />
+
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6">
+        <div className="grid gap-8 lg:grid-cols-[1.12fr_0.88fr]">
+          <FadeIn>
+            <ProductGallery
+              name={product.name}
+              images={product.images}
+              category={product.category}
+            />
+          </FadeIn>
+          <FadeIn delay={0.08}>
+            <ProductPurchasePanel product={product} />
+          </FadeIn>
+        </div>
+
+        <section className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+          <FadeIn>
+            <Card className="h-full border-border/70 bg-card/88">
+              <CardHeader>
+                <CardTitle className="font-heading text-3xl tracking-tight">
+                  Description
+                </CardTitle>
+                <CardDescription>
+                  Crafted for premium interiors with honest materials and quiet
+                  detail.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-base leading-8 text-muted-foreground">
+                  {product.description}
+                </p>
+                <Separator />
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">{product.material}</Badge>
+                  <Badge variant="secondary">{product.color}</Badge>
+                  <Badge variant="secondary">{product.size}</Badge>
+                  {product.isFeatured ? <Badge>Featured</Badge> : null}
+                </div>
+              </CardContent>
+            </Card>
+          </FadeIn>
+
+          <FadeIn delay={0.08}>
+            <Card className="h-full border-border/70 bg-card/88">
+              <CardHeader>
+                <CardTitle className="font-heading text-3xl tracking-tight">
+                  Specifications
+                </CardTitle>
+                <CardDescription>
+                  Clear product information for materials, scale, and inventory.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4 sm:grid-cols-2">
+                {product.specifications.map((spec) => (
+                  <div
+                    key={spec.label}
+                    className="rounded-[1.4rem] border border-border/70 bg-background px-4 py-4"
+                  >
+                    <p className="text-[0.72rem] uppercase tracking-[0.2em] text-muted-foreground">
+                      {spec.label}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      {spec.value}
+                    </p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </FadeIn>
+        </section>
+
+        <section className="flex flex-col gap-6 pt-4">
+          <div className="max-w-2xl">
+            <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
+              Related Products
+            </p>
+            <h2 className="mt-3 font-heading text-4xl tracking-tight text-foreground">
+              More from the same collection mood.
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">
+              Similar materials, silhouettes, and category adjacency from the
+              current catalog.
             </p>
           </div>
-          <p className="max-w-xl text-base leading-7 text-muted-foreground">
-            {product.description}
-          </p>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Card size="sm">
-              <CardHeader>
-                <CardTitle>Price</CardTitle>
-              </CardHeader>
-              <CardContent>{product.price}</CardContent>
-            </Card>
-            <Card size="sm">
-              <CardHeader>
-                <CardTitle>Material</CardTitle>
-              </CardHeader>
-              <CardContent>{product.material}</CardContent>
-            </Card>
-            <Card size="sm">
-              <CardHeader>
-                <CardTitle>Collection</CardTitle>
-              </CardHeader>
-              <CardContent>{product.collection}</CardContent>
-            </Card>
+
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {relatedProducts.map((related, index) => (
+              <CatalogProductCard
+                key={related.id}
+                product={related}
+                delay={index * 0.05}
+              />
+            ))}
           </div>
-        </div>
+        </section>
       </div>
-      <Card className="border-border/70 bg-card/80">
-        <CardHeader>
-          <CardTitle>Product page placeholder</CardTitle>
-          <CardDescription>
-            Recommended companions, gallery assets, inventory, and add-to-cart
-            mutations will be implemented later.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-3">
-          {product.specs.map((spec) => (
-            <div
-              key={spec.label}
-              className="rounded-2xl border border-border/70 bg-background px-4 py-3"
-            >
-              <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                {spec.label}
-              </p>
-              <p className="mt-2 text-sm font-medium text-foreground">
-                {spec.value}
-              </p>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
     </div>
   );
 }

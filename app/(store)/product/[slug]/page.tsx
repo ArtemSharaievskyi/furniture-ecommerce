@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { ProductPageView } from "@/features/catalog/components/product-page-view";
-import { getCatalogProductBySlug } from "@/lib/cms/loaders";
+import { getProductPageData } from "@/features/catalog/server/catalog-queries";
 
 export default async function ProductPage({
   params,
@@ -9,11 +9,11 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getCatalogProductBySlug(slug);
+  const data = await getProductPageData(slug);
 
-  if (!product) {
+  if (!data) {
     notFound();
   }
 
-  return <ProductPageView product={product} />;
+  return <ProductPageView {...data} />;
 }
