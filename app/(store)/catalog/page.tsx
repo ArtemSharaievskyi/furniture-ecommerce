@@ -1,8 +1,17 @@
 import { CatalogPageView } from "@/features/catalog/components/catalog-page-view";
-import { getCatalogProducts } from "@/lib/cms/loaders";
+import {
+  getCatalogPageData,
+  parseCatalogSearchParams,
+} from "@/features/catalog/server/catalog-queries";
 
-export default async function CatalogPage() {
-  const products = await getCatalogProducts();
+export default async function CatalogPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const filters = parseCatalogSearchParams(resolvedSearchParams);
+  const data = await getCatalogPageData(filters);
 
-  return <CatalogPageView products={products} />;
+  return <CatalogPageView {...data} filters={filters} />;
 }
