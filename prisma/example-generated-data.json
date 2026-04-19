@@ -1,0 +1,64 @@
+{
+  "catalogSummary": {
+    "categories": ["sofas", "chairs", "tables", "beds", "wardrobes"],
+    "productCount": 20,
+    "featuredProducts": [
+      "Harbor Modular Sofa",
+      "Aster Curved Sofa",
+      "Cascade Dining Table",
+      "Mora Storage Bed",
+      "Haven Sliding Wardrobe"
+    ]
+  },
+  "sampleProducts": [
+    {
+      "name": "Harbor Modular Sofa",
+      "category": "sofas",
+      "priceCents": 329900,
+      "material": "Kiln-dried hardwood, high-resilience foam, linen weave upholstery",
+      "color": "Sand",
+      "size": "3-Seater",
+      "variants": [
+        "Sand / 3-Seater",
+        "Olive / 3-Seater",
+        "Sand / Corner Sectional"
+      ]
+    },
+    {
+      "name": "Linden Dining Chair",
+      "category": "chairs",
+      "priceCents": 45900,
+      "material": "Solid oak, molded backrest, linen blend upholstery",
+      "color": "Pebble",
+      "size": "Dining Chair",
+      "variants": ["Pebble / Oak", "Olive / Walnut"]
+    },
+    {
+      "name": "Cascade Dining Table",
+      "category": "tables",
+      "priceCents": 419900,
+      "material": "Travertine veneer, engineered core, solid oak base",
+      "color": "Natural Stone",
+      "size": "240 cm",
+      "variants": ["Natural Stone / 240 cm", "Smoked Oak / 220 cm"]
+    },
+    {
+      "name": "Soma Upholstered Bed",
+      "category": "beds",
+      "priceCents": 319900,
+      "material": "Hardwood frame, foam padding, chenille upholstery",
+      "color": "Cloud",
+      "size": "King",
+      "variants": ["Cloud / King", "Dune / Queen"]
+    },
+    {
+      "name": "Haven Sliding Wardrobe",
+      "category": "wardrobes",
+      "priceCents": 299900,
+      "material": "Melamine-faced oak veneer panels, aluminum track",
+      "color": "Sand Oak",
+      "size": "200 cm",
+      "variants": ["Sand Oak / 200 cm", "Clay Taupe / 220 cm"]
+    }
+  ]
+}

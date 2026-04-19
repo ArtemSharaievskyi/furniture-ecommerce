@@ -126,6 +126,28 @@ async function main() {
       unitPriceCents: defaultVariant.priceCents,
     },
   });
+
+  const featuredProducts = seedProducts
+    .filter((product) => product.isFeatured)
+    .map((product) => product.name);
+
+  console.log(
+    JSON.stringify(
+      {
+        seeded: {
+          categories: seedCategories.length,
+          products: seedProducts.length,
+          variants: seedProducts.reduce(
+            (total, product) => total + product.variants.length,
+            0,
+          ),
+          featuredProducts,
+        },
+      },
+      null,
+      2,
+    ),
+  );
 }
 
 main()
