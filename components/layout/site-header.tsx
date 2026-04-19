@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MenuIcon, ShoppingBagIcon, UserIcon } from "lucide-react";
+import { ShoppingBagIcon, UserIcon } from "lucide-react";
 
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { SiteLogo } from "@/components/layout/site-logo";
@@ -23,24 +23,26 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" size="icon-sm" render={<Link href="/account" />}>
+          <Button
+            nativeButton={false}
+            variant="ghost"
+            size="icon-sm"
+            render={<Link href="/account" />}
+          >
             <UserIcon />
             <span className="sr-only">Account</span>
           </Button>
-          <Button variant="outline" render={<Link href="/cart" />}>
+          <Button
+            nativeButton={false}
+            variant="outline"
+            render={<Link href="/cart" />}
+          >
             <ShoppingBagIcon data-icon="inline-start" />
             Cart
           </Button>
         </div>
         <div className="ml-auto lg:hidden">
-          <MobileNav
-            trigger={
-              <Button variant="ghost" size="icon-sm">
-                <MenuIcon />
-                <span className="sr-only">Open navigation</span>
-              </Button>
-            }
-          />
+          <MobileNav />
         </div>
       </div>
     </header>

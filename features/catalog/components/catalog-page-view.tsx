@@ -2,7 +2,6 @@ import { FilterIcon, SlidersHorizontalIcon } from "lucide-react";
 
 import { FadeIn } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/shared/page-hero";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import type {
   CatalogFilters,
@@ -44,12 +43,16 @@ export function CatalogPageView({
               {total} products available
             </p>
           </div>
-          <CatalogMobileFilters filters={filters} options={options}>
-            <Button variant="outline">
-              <FilterIcon data-icon="inline-start" />
-              Filters
-            </Button>
-          </CatalogMobileFilters>
+          <CatalogMobileFilters
+            filters={filters}
+            options={options}
+            label={
+              <>
+                <FilterIcon data-icon="inline-start" />
+                Filters
+              </>
+            }
+          />
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[292px_minmax(0,1fr)]">

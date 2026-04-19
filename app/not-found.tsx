@@ -15,7 +15,9 @@ export default function NotFound() {
         The route structure is ready, but this particular path has no mock
         content assigned yet.
       </p>
-      <Button render={<Link href="/" />}>Back to home</Button>
+      <Button nativeButton={false} render={<Link href="/" />}>
+        Back to home
+      </Button>
     </div>
   );
 }

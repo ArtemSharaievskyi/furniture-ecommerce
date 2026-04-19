@@ -24,11 +24,15 @@ export function HomePageView() {
         description="This starter is organized for content, commerce, auth, and admin workflows from day one, while keeping implementation intentionally placeholder-only."
         actions={
           <>
-            <Button render={<Link href="/catalog" />}>
+            <Button nativeButton={false} render={<Link href="/catalog" />}>
               Browse catalog
               <ArrowRightIcon data-icon="inline-end" />
             </Button>
-            <Button variant="outline" render={<Link href="/admin" />}>
+            <Button
+              nativeButton={false}
+              variant="outline"
+              render={<Link href="/admin" />}
+            >
               Open admin shell
             </Button>
           </>

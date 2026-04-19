@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBagIcon, UserIcon } from "lucide-react";
+import { MenuIcon, ShoppingBagIcon, UserIcon } from "lucide-react";
 
 import {
   Sheet,
@@ -11,12 +11,24 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 
-export function MobileNav({ trigger }: { trigger: React.ReactNode }) {
+export function MobileNav() {
   return (
     <Sheet>
-      <SheetTrigger render={trigger as React.ReactElement} />
+      <SheetTrigger
+        render={
+          <button
+            type="button"
+            className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
+          />
+        }
+      >
+        <MenuIcon />
+        <span className="sr-only">Open navigation</span>
+      </SheetTrigger>
       <SheetContent side="right" className="w-full max-w-sm">
         <SheetHeader>
           <SheetTitle>Browse the showroom</SheetTitle>

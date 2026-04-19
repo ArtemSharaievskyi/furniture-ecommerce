@@ -160,7 +160,9 @@ export function CartPageView() {
                     Add a few pieces from the catalog to start building your room.
                   </p>
                 </div>
-                <Button render={<Link href="/catalog" />}>Browse catalog</Button>
+                <Button nativeButton={false} render={<Link href="/catalog" />}>
+                  Browse catalog
+                </Button>
               </div>
             )}
           </CardContent>
@@ -199,10 +201,15 @@ export function CartPageView() {
             </p>
           </CardContent>
           <CardFooter className="justify-between gap-3">
-            <Button variant="outline" render={<Link href="/catalog" />}>
+            <Button
+              nativeButton={false}
+              variant="outline"
+              render={<Link href="/catalog" />}
+            >
               Continue browsing
             </Button>
             <Button
+              nativeButton={false}
               render={<Link href="/checkout" />}
               disabled={!cart?.items.length}
             >

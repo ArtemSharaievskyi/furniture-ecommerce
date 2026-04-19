@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import {
   Sheet,
@@ -10,25 +10,36 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { buttonVariants } from "@/components/ui/button";
 import type {
   CatalogFilters,
   CatalogFilterOptions,
 } from "@/features/catalog/types";
+import { cn } from "@/lib/utils";
 
 import { CatalogFilterSidebar } from "./catalog-filter-sidebar";
 
 export function CatalogMobileFilters({
-  children,
+  label,
   filters,
   options,
 }: {
-  children: ReactNode;
+  label: ReactNode;
   filters: CatalogFilters;
   options: CatalogFilterOptions;
 }) {
   return (
     <Sheet>
-      <SheetTrigger render={children as ReactElement} />
+      <SheetTrigger
+        render={
+          <button
+            type="button"
+            className={cn(buttonVariants({ variant: "outline" }))}
+          />
+        }
+      >
+        {label}
+      </SheetTrigger>
       <SheetContent side="right" className="w-full max-w-md overflow-y-auto p-0">
         <SheetHeader className="px-4 pt-4">
           <SheetTitle>Refine catalog</SheetTitle>

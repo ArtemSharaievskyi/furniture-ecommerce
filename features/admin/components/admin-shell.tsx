@@ -26,6 +26,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             return (
               <Button
                 key={item.label}
+                nativeButton={false}
                 variant="ghost"
                 className="justify-start"
                 render={<Link href={item.href} />}
