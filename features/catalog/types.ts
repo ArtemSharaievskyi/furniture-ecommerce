@@ -78,6 +78,7 @@ export type ProductVariantItem = {
   stockQuantity: number;
   stockLabel: string;
   isDefault: boolean;
+  unitPriceCents?: number;
   price: string;
 };
 

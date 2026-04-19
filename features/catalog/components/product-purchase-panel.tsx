@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useCart } from "@/features/cart/hooks/use-cart";
 import type { ProductDetail, ProductVariantItem } from "@/features/catalog/types";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,7 @@ function getVariantLabel(variant: ProductVariantItem) {
 }
 
 export function ProductPurchasePanel({ product }: { product: ProductDetail }) {
+  const { addItem, isAddingItem, cart } = useCart();
   const [selectedVariantId, setSelectedVariantId] = useState(
     product.defaultVariant?.id ?? product.variants[0]?.id ?? "",
   );
@@ -68,6 +70,30 @@ export function ProductPurchasePanel({ product }: { product: ProductDetail }) {
     if (nextVariant) {
       setSelectedVariantId(nextVariant.id);
     }
+  }
+
+  async function handleAddToCart() {
+    if (!selectedVariant) {
+      return;
+    }
+
+    await addItem({
+      productId: product.id,
+      variantId: selectedVariant.id,
+      quantity: 1,
+      snapshot: {
+        productSlug: product.slug,
+        productName: product.name,
+        category: product.category,
+        imageUrl: product.images[0]?.url ?? "",
+        variantName: selectedVariant.name,
+        color: selectedVariant.color,
+        size: selectedVariant.size,
+        material: selectedVariant.material,
+        unitPriceCents: selectedVariant.unitPriceCents ?? 0,
+        currencyCode: "USD",
+      },
+    });
   }
 
   return (
@@ -195,9 +221,10 @@ export function ProductPurchasePanel({ product }: { product: ProductDetail }) {
           <Button
             type="button"
             size="lg"
+            onClick={handleAddToCart}
             disabled={!selectedVariant || selectedVariant.stockQuantity <= 0}
           >
-            Add to cart
+            {isAddingItem ? "Adding..." : "Add to cart"}
           </Button>
           <Button type="button" size="lg" variant="outline">
             <HeartIcon data-icon="inline-start" />
@@ -207,7 +234,7 @@ export function ProductPurchasePanel({ product }: { product: ProductDetail }) {
 
         <p className="text-sm leading-6 text-muted-foreground">
           Selected: {selectedVariant ? getVariantLabel(selectedVariant) : "None"}.
-          Cart mutation wiring can plug into this selector state next.
+          {cart ? ` Your cart currently has ${cart.itemCount} item${cart.itemCount === 1 ? "" : "s"}.` : ""}
         </p>
 
         <div className="grid gap-3 sm:grid-cols-2">

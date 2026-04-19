@@ -366,6 +366,7 @@ export async function getProductPageData(
       stockQuantity: variant.stockQuantity,
       stockLabel: buildStockLabel(variant.stockQuantity),
       isDefault: variant.isDefault,
+      unitPriceCents: variant.priceCents,
       price: formatCurrency(variant.priceCents, product.currencyCode),
     })),
     defaultVariant: resolvedDefaultVariant
@@ -382,6 +383,7 @@ export async function getProductPageData(
           stockQuantity: resolvedDefaultVariant.stockQuantity,
           stockLabel: buildStockLabel(resolvedDefaultVariant.stockQuantity),
           isDefault: resolvedDefaultVariant.isDefault,
+          unitPriceCents: resolvedDefaultVariant.priceCents,
           price: formatCurrency(
             resolvedDefaultVariant.priceCents,
             product.currencyCode,
