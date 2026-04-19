@@ -1,0 +1,53 @@
+[
+  {
+    "id": "chair-harbor",
+    "slug": "harbor-lounge-chair",
+    "name": "Harbor Lounge Chair",
+    "tagline": "A softened silhouette for reading corners and gallery-like living rooms.",
+    "description": "Placeholder catalog entry sourced from the local mock CMS. Future implementations can replace this loader with normalized CMS or database queries without changing the route structure.",
+    "category": "Living",
+    "collection": "Harbor",
+    "finish": "Warm oak",
+    "material": "Oak, bouclé, foam",
+    "price": "€1,450",
+    "specs": [
+      { "label": "Width", "value": "82 cm" },
+      { "label": "Depth", "value": "79 cm" },
+      { "label": "Lead time", "value": "6-8 weeks" }
+    ]
+  },
+  {
+    "id": "table-cascade",
+    "slug": "cascade-dining-table",
+    "name": "Cascade Dining Table",
+    "tagline": "A generous stone-topped table designed for open kitchens and hosting.",
+    "description": "This mock product demonstrates how the catalog can be rendered from local data while Meilisearch and a real CMS are still pending.",
+    "category": "Dining",
+    "collection": "Cascade",
+    "finish": "Travertine",
+    "material": "Travertine, walnut veneer",
+    "price": "€3,980",
+    "specs": [
+      { "label": "Length", "value": "240 cm" },
+      { "label": "Seats", "value": "8 people" },
+      { "label": "Care", "value": "Sealed natural stone" }
+    ]
+  },
+  {
+    "id": "lamp-tide",
+    "slug": "tide-floor-lamp",
+    "name": "Tide Floor Lamp",
+    "tagline": "An ambient brass floor lamp for layered evening light.",
+    "description": "A future product gallery, stock status, variant picker, and structured data block can all slot into this page without changing the high-level architecture.",
+    "category": "Lighting",
+    "collection": "Tide",
+    "finish": "Brushed brass",
+    "material": "Brass, parchment, steel",
+    "price": "€420",
+    "specs": [
+      { "label": "Height", "value": "168 cm" },
+      { "label": "Bulb", "value": "E27 LED" },
+      { "label": "Dimmable", "value": "Yes" }
+    ]
+  }
+]

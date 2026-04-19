@@ -1,0 +1,14 @@
+[
+  {
+    "id": "living",
+    "name": "Living"
+  },
+  {
+    "id": "dining",
+    "name": "Dining"
+  },
+  {
+    "id": "lighting",
+    "name": "Lighting"
+  }
+]
