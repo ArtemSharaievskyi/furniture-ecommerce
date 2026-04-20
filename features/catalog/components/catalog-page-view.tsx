@@ -12,6 +12,7 @@ import type {
 import { CatalogFilterSidebar } from "./catalog-filter-sidebar";
 import { CatalogMobileFilters } from "./catalog-mobile-filters";
 import { CatalogProductCard } from "./catalog-product-card";
+import { CatalogSearch } from "./catalog-search";
 import { CatalogSortBar } from "./catalog-sort-bar";
 
 export function CatalogPageView({
@@ -34,6 +35,12 @@ export function CatalogPageView({
       />
 
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6">
+        <FadeIn>
+          <div className="rounded-[2rem] border border-border/70 bg-card/82 p-4 shadow-sm shadow-stone-900/5 md:p-5">
+            <CatalogSearch key={filters.query} initialQuery={filters.query} />
+          </div>
+        </FadeIn>
+
         <div className="flex items-center justify-between gap-4 lg:hidden">
           <div>
             <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
@@ -83,6 +90,7 @@ export function CatalogPageView({
                 </div>
                 <Separator className="my-4" />
                 <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  <span>{filters.query ? `Search: ${filters.query}` : "Browse all"}</span>
                   <span>{filters.categories.length || 0} category filters</span>
                   <span>{filters.colors.length || 0} color filters</span>
                   <span>{filters.materials.length || 0} material filters</span>
@@ -109,8 +117,8 @@ export function CatalogPageView({
                   No products match these filters.
                 </h3>
                 <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
-                  Try clearing a few filter groups or broadening the price range
-                  to explore more of the collection.
+                  Try broadening the search term or clearing a few filter groups to
+                  explore more of the collection.
                 </p>
               </div>
             )}

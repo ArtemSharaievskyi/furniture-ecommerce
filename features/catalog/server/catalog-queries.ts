@@ -3,6 +3,7 @@ import "server-only";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/db";
+import { searchProductIds } from "@/lib/search/meili";
 
 import type {
   CatalogFilters,
@@ -48,6 +49,12 @@ function normalizePrice(value: string | string[] | undefined) {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
 }
 
+function normalizeQuery(value: string | string[] | undefined) {
+  const raw = Array.isArray(value) ? value[0] : value;
+
+  return raw?.trim() ?? "";
+}
+
 export function parseCatalogSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): CatalogFilters {
@@ -60,6 +67,7 @@ export function parseCatalogSearchParams(
     : "featured";
 
   return {
+    query: normalizeQuery(searchParams.q),
     categories: normalizeMultiValue(searchParams.category),
     colors: normalizeMultiValue(searchParams.color),
     materials: normalizeMultiValue(searchParams.material),
@@ -145,8 +153,56 @@ function buildCatalogItem(product: {
 export async function getCatalogPageData(
   filters: CatalogFilters,
 ): Promise<CatalogPageData> {
+  const matchedSearchIds = filters.query
+    ? await searchProductIds(filters.query)
+    : null;
+
   const where: Prisma.ProductWhereInput = {
     status: "ACTIVE",
+    ...(matchedSearchIds
+      ? {
+          id: {
+            in: matchedSearchIds,
+          },
+        }
+      : filters.query
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: filters.query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                shortDescription: {
+                  contains: filters.query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: filters.query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                material: {
+                  contains: filters.query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                category: {
+                  name: {
+                    contains: filters.query,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            ],
+          }
+        : {}),
     ...(filters.categories.length
       ? {
           category: {
@@ -239,6 +295,13 @@ export async function getCatalogPageData(
     ]);
 
   const catalogItems: CatalogItem[] = products.map(buildCatalogItem);
+  const orderedCatalogItems =
+    matchedSearchIds && filters.sort === "featured"
+      ? [...catalogItems].sort(
+          (left, right) =>
+            matchedSearchIds.indexOf(left.id) - matchedSearchIds.indexOf(right.id),
+        )
+      : catalogItems;
 
   const options: CatalogFilterOptions = {
     categories,
@@ -283,7 +346,7 @@ export async function getCatalogPageData(
 
   return {
     filters,
-    products: catalogItems,
+    products: orderedCatalogItems,
     options,
     total,
   };

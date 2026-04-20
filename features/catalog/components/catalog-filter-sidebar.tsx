@@ -65,6 +65,7 @@ export function CatalogFilterSidebar({
       </CardHeader>
       <CardContent>
         <form action="/catalog" className="flex flex-col gap-6">
+          {filters.query ? <input type="hidden" name="q" value={filters.query} /> : null}
           <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-foreground">Sort</h3>
             <div className="grid gap-2">

@@ -6,6 +6,7 @@ export type CatalogSort =
   | "name";
 
 export type CatalogFilters = {
+  query: string;
   categories: string[];
   colors: string[];
   materials: string[];
@@ -59,6 +60,28 @@ export type CatalogPageData = {
   products: CatalogItem[];
   options: CatalogFilterOptions;
   total: number;
+};
+
+export type CatalogSearchHit = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  material: string;
+  shortDescription: string;
+  imageUrl: string;
+  price: string;
+  isFeatured: boolean;
+};
+
+export type CatalogSearchResponse = {
+  query: string;
+  results: CatalogSearchHit[];
+  suggestions: {
+    products: string[];
+    categories: string[];
+    materials: string[];
+  };
 };
 
 export type ProductImageItem = {

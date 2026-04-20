@@ -54,6 +54,12 @@ CREATE DATABASE north_atelier;
 npm run db:generate
 ```
 
+6. Start Meilisearch locally:
+
+```bash
+docker compose -f docker-compose.meilisearch.yml up -d
+```
+
 ## Migration and Seeding
 
 Create and apply your first development migration:
@@ -74,6 +80,12 @@ Seed the database with example furniture categories and products:
 npm run db:seed
 ```
 
+Index the active products into Meilisearch:
+
+```bash
+npm run search:index
+```
+
 Open Prisma Studio:
 
 ```bash
@@ -89,6 +101,23 @@ The seed includes:
 - furniture products with realistic descriptions
 - product image records
 - multiple purchasable variants per product
+- a searchable Meilisearch-ready product catalog
+
+## Product Search
+
+The catalog now includes a Meilisearch-backed search experience with:
+
+- instant search suggestions
+- live result previews
+- search across product name, category, material, and description
+- URL-driven catalog search via the `q` query parameter
+
+Meilisearch defaults:
+
+- host: `http://127.0.0.1:7700`
+- master key: `local-master-key`
+
+If Meilisearch is temporarily unavailable, the catalog falls back to a Prisma text query so the page remains usable while local search is offline.
 
 ## Useful Commands
 
@@ -101,4 +130,5 @@ npm run db:migrate -- --name init_commerce_schema
 npm run db:push
 npm run db:seed
 npm run db:studio
+npm run search:index
 ```
