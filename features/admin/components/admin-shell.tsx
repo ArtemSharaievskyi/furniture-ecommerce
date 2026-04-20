@@ -1,42 +1,68 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { LayoutDashboardIcon, PackageIcon, SearchIcon, UsersIcon } from "lucide-react";
 
+import { LogoutButton } from "@/components/auth/logout-button";
 import { SiteLogo } from "@/components/layout/site-logo";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-const adminNav = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboardIcon },
-  { href: "/catalog", label: "Catalog", icon: PackageIcon },
-  { href: "/account", label: "Customers", icon: UsersIcon },
-  { href: "/catalog", label: "Search", icon: SearchIcon },
-];
+import { AdminNav } from "./admin-nav";
 
-export function AdminShell({ children }: { children: ReactNode }) {
+export function AdminShell({
+  children,
+  counts,
+}: {
+  children: ReactNode;
+  counts: {
+    orders: number;
+    products: number;
+    categories: number;
+  };
+}) {
   return (
-    <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen lg:grid-cols-[300px_1fr]">
       <aside className="border-r border-border/70 bg-card/70 px-5 py-6">
-        <SiteLogo />
+        <div className="flex items-center justify-between gap-3">
+          <SiteLogo />
+          <Badge variant="outline">Admin</Badge>
+        </div>
         <Separator className="my-6" />
-        <nav className="flex flex-col gap-2">
-          {adminNav.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <Button
-                key={item.label}
-                nativeButton={false}
-                variant="ghost"
-                className="justify-start"
-                render={<Link href={item.href} />}
-              >
-                <Icon data-icon="inline-start" />
-                {item.label}
-              </Button>
-            );
-          })}
-        </nav>
+        <Card className="border-border/70 bg-background/90">
+          <CardHeader>
+            <CardTitle>Control room</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-3 gap-3 text-center">
+            <div className="rounded-xl border border-border/70 bg-card px-2 py-3">
+              <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                Orders
+              </p>
+              <p className="mt-2 font-heading text-3xl tracking-tight">{counts.orders}</p>
+            </div>
+            <div className="rounded-xl border border-border/70 bg-card px-2 py-3">
+              <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                Products
+              </p>
+              <p className="mt-2 font-heading text-3xl tracking-tight">{counts.products}</p>
+            </div>
+            <div className="rounded-xl border border-border/70 bg-card px-2 py-3">
+              <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                Categories
+              </p>
+              <p className="mt-2 font-heading text-3xl tracking-tight">{counts.categories}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Separator className="my-6" />
+        <AdminNav />
+        <Separator className="my-6" />
+        <div className="flex flex-col gap-3">
+          <Button nativeButton={false} variant="outline" render={<Link href="/" />}>
+            Back to storefront
+          </Button>
+          <LogoutButton className="w-full justify-center" />
+        </div>
       </aside>
       <main className="bg-[linear-gradient(180deg,_rgba(250,247,242,0.95),_rgba(244,238,231,0.72))]">
         {children}
