@@ -1,3 +1,5 @@
+import { auth } from "@/auth";
+import { LogoutButton } from "@/components/auth/logout-button";
 import Link from "next/link";
 import { ShoppingBagIcon, UserIcon } from "lucide-react";
 
@@ -6,7 +8,10 @@ import { SiteLogo } from "@/components/layout/site-logo";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN";
+
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center gap-4 px-6 py-4">
@@ -23,15 +28,42 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Button
-            nativeButton={false}
-            variant="ghost"
-            size="icon-sm"
-            render={<Link href="/account" />}
-          >
-            <UserIcon />
-            <span className="sr-only">Account</span>
-          </Button>
+          {session?.user ? (
+            <>
+              {isAdmin ? (
+                <Button
+                  nativeButton={false}
+                  variant="ghost"
+                  render={<Link href="/admin" />}
+                >
+                  Admin
+                </Button>
+              ) : null}
+              <Button
+                nativeButton={false}
+                variant="ghost"
+                size="icon-sm"
+                render={<Link href="/account" />}
+              >
+                <UserIcon />
+                <span className="sr-only">Account</span>
+              </Button>
+              <LogoutButton variant="ghost" />
+            </>
+          ) : (
+            <>
+              <Button
+                nativeButton={false}
+                variant="ghost"
+                render={<Link href="/login" />}
+              >
+                Login
+              </Button>
+              <Button nativeButton={false} render={<Link href="/register" />}>
+                Register
+              </Button>
+            </>
+          )}
           <Button
             nativeButton={false}
             variant="outline"
@@ -42,7 +74,7 @@ export function SiteHeader() {
           </Button>
         </div>
         <div className="ml-auto lg:hidden">
-          <MobileNav />
+          <MobileNav isAuthenticated={!!session?.user} isAdmin={isAdmin} />
         </div>
       </div>
     </header>

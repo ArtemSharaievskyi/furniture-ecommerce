@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MenuIcon, ShoppingBagIcon, UserIcon } from "lucide-react";
 
+import { LogoutButton } from "@/components/auth/logout-button";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +16,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 
-export function MobileNav() {
+export function MobileNav({
+  isAuthenticated,
+  isAdmin,
+}: {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}) {
   return (
     <Sheet>
       <SheetTrigger
@@ -56,6 +63,15 @@ export function MobileNav() {
               <UserIcon className="size-4" />
               Account
             </Link>
+            {isAdmin ? (
+              <Link
+                href="/admin"
+                className="flex items-center gap-3 text-sm text-muted-foreground"
+              >
+                <UserIcon className="size-4" />
+                Admin
+              </Link>
+            ) : null}
             <Link
               href="/cart"
               className="flex items-center gap-3 text-sm text-muted-foreground"
@@ -63,6 +79,24 @@ export function MobileNav() {
               <ShoppingBagIcon className="size-4" />
               Cart
             </Link>
+            {isAuthenticated ? (
+              <LogoutButton className="w-full justify-center" />
+            ) : (
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/login"
+                  className={cn(buttonVariants({ variant: "outline" }))}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className={cn(buttonVariants({ variant: "default" }))}
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </SheetContent>

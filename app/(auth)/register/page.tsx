@@ -1,6 +1,15 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
 import { AuthPageView } from "@/features/auth/components/auth-page-view";
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect(session.user.role === "ADMIN" ? "/admin" : "/account");
+  }
+
   return (
     <AuthPageView
       mode="register"

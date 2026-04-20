@@ -1,6 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +28,9 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 }
 
 function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -35,7 +41,25 @@ function LoginForm() {
 
   return (
     <form
-      onSubmit={form.handleSubmit(() => undefined)}
+      onSubmit={form.handleSubmit(async (values) => {
+        setSubmissionError(null);
+        const callbackUrl = searchParams.get("callbackUrl") ?? "/account";
+
+        const result = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+          callbackUrl,
+        });
+
+        if (result?.error) {
+          setSubmissionError("We couldn't sign you in with those credentials.");
+          return;
+        }
+
+        router.push(result?.url ?? callbackUrl);
+        router.refresh();
+      })}
       className="flex flex-col gap-5"
     >
       <FieldGroup>
@@ -55,19 +79,23 @@ function LoginForm() {
               {...form.register("password")}
             />
             <FieldDescription>
-              Auth.js is configured as a placeholder only. No live sign-in logic
-              has been added yet.
+              Use the account email and password you registered locally.
             </FieldDescription>
             <FieldError errors={[form.formState.errors.password]} />
           </FieldContent>
         </Field>
       </FieldGroup>
-      <Button type="submit">Sign in</Button>
+      <FieldError errors={submissionError ? [{ message: submissionError }] : []} />
+      <Button type="submit" disabled={form.formState.isSubmitting}>
+        {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
+      </Button>
     </form>
   );
 }
 
 function RegisterForm() {
+  const router = useRouter();
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -79,7 +107,41 @@ function RegisterForm() {
 
   return (
     <form
-      onSubmit={form.handleSubmit(() => undefined)}
+      onSubmit={form.handleSubmit(async (values) => {
+        setSubmissionError(null);
+
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+
+        if (!response.ok) {
+          setSubmissionError(payload?.error ?? "We couldn't create your account.");
+          return;
+        }
+
+        const result = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          router.push("/login?registered=1");
+          router.refresh();
+          return;
+        }
+
+        router.push("/account");
+        router.refresh();
+      })}
       className="flex flex-col gap-5"
     >
       <FieldGroup>
@@ -106,14 +168,16 @@ function RegisterForm() {
               {...form.register("password")}
             />
             <FieldDescription>
-              Auth.js is configured as a placeholder only. No live sign-in logic
-              has been added yet.
+              Minimum 8 characters. We store a hashed password locally.
             </FieldDescription>
             <FieldError errors={[form.formState.errors.password]} />
           </FieldContent>
         </Field>
       </FieldGroup>
-      <Button type="submit">Create account</Button>
+      <FieldError errors={submissionError ? [{ message: submissionError }] : []} />
+      <Button type="submit" disabled={form.formState.isSubmitting}>
+        {form.formState.isSubmitting ? "Creating account..." : "Create account"}
+      </Button>
     </form>
   );
 }
