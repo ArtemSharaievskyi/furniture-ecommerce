@@ -7,10 +7,10 @@ export function CheckoutPageView() {
     <div className="pb-16">
       <PageHero
         eyebrow="Checkout"
-        title="A validated checkout shell without payment processing."
-        description="The form uses React Hook Form and Zod for local validation only. Real payment, shipping, and order logic are intentionally deferred."
+        title="Local checkout with a mock payment confirmation step."
+        description="Capture customer details, simulate a successful payment locally, create an order in Prisma, and clear the cart after confirmation."
       />
-      <div className="mx-auto w-full max-w-4xl px-6">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <CheckoutForm />
       </div>
     </div>

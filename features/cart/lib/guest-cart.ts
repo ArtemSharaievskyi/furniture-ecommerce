@@ -99,6 +99,11 @@ export function removeGuestCartItem(itemId: string) {
   return getGuestCartSummary();
 }
 
+export function clearGuestCart() {
+  writeStorageItems([]);
+  return getGuestCartSummary();
+}
+
 export function subscribeToGuestCart(onChange: () => void) {
   if (!canUseStorage()) {
     return () => undefined;

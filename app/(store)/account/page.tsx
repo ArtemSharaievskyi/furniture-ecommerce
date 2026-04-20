@@ -1,56 +1,49 @@
-import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth/guards";
-import { AccountPageView } from "@/features/account/components/account-page-view";
+import { AccountOverviewView } from "@/features/account/components/account-overview-view";
+import { getAccountOverviewData } from "@/features/account/server/account-queries";
 
 export default async function AccountPage() {
   const session = await requireUser();
-  const account = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
-    select: {
-      name: true,
-      email: true,
-      role: true,
-      createdAt: true,
-      _count: {
-        select: {
-          orders: true,
-          cartItems: true,
-        },
-      },
-    },
-  });
+  const account = await getAccountOverviewData(session.user.id);
 
-  if (!account) {
+  if (!account.user) {
     return null;
   }
 
   return (
-    <AccountPageView
+    <AccountOverviewView
       user={{
-        name: account.name ?? "North Atelier customer",
-        email: account.email,
-        role: account.role,
-        createdAt: account.createdAt.toISOString(),
+        name: account.user.name ?? "North Atelier customer",
+        email: account.user.email,
+        role: account.user.role,
+        createdAt: account.user.createdAt.toISOString(),
       }}
       stats={[
         {
           label: "Orders",
-          value: String(account._count.orders),
-          description: "Placed through your local customer account.",
+          value: String(account.user._count.orders),
+          description: "Placed through your authenticated account.",
         },
         {
           label: "Cart items",
-          value: String(account._count.cartItems),
-          description: "Currently stored against your signed-in profile.",
+          value: String(account.user._count.cartItems),
+          description: "Currently saved against your profile.",
         },
         {
-          label: "Role",
-          value: account.role,
-          description: "Used to unlock customer or admin-only routes.",
+          label: "Recent orders",
+          value: String(account.recentOrders.length),
+          description: "Latest order cards shown below.",
         },
       ]}
+      recentOrders={account.recentOrders.map((order) => ({
+        id: order.id,
+        orderNumber: order.orderNumber,
+        status: order.status,
+        totalCents: order.totalCents,
+        currencyCode: order.currencyCode,
+        placedAt: (order.placedAt ?? order.createdAt).toISOString(),
+        itemCount: order.items.length,
+      }))}
     />
   );
 }
