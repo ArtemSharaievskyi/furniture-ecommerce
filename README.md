@@ -9,12 +9,15 @@
 <img width="1353" height="1272" alt="image" src="https://github.com/user-attachments/assets/a1f3dd56-92d0-4156-8143-8eb56e95b0d6" />
 <img width="1474" height="1276" alt="image" src="https://github.com/user-attachments/assets/0bfda695-2d87-48fd-8a32-b403fd3202fd" />
 <img width="1333" height="1272" alt="image" src="https://github.com/user-attachments/assets/6a0056ff-7345-476e-ac63-95e679a37a4f" /> -->
-### 🖥️ Main Pages
 
+### 📱 Adaptive Design Preview
 <p align="center">
   <img src="https://github.com/user-attachments/assets/225d1342-66c3-4c6a-a93d-f8a63b04349e" width="80%" />
 </p>
 
+---
+
+### 🖥️ Main Pages
 <p align="center">
   <img src="https://github.com/user-attachments/assets/0b498a85-bb9b-4bfd-bfb1-5a1b70c9b6fe" width="80%" />
 </p>
@@ -32,7 +35,7 @@
 ### 🛒 Catalog
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a1f3dd56-92d0-4156-8143-8eb56e95b0d6" width="70%" />
+  <img src="https://github.com/user-attachments/assets/a1f3dd56-92d0-4156-8143-8eb56e95b0d6" width="80%" />
 </p>
 
 ---
@@ -40,7 +43,7 @@
 ### 📦 Product Page
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0bfda695-2d87-48fd-8a32-b403fd3202fd" width="70%" />
+  <img src="https://github.com/user-attachments/assets/0bfda695-2d87-48fd-8a32-b403fd3202fd" width="80%" />
 </p>
 
 ---
@@ -48,18 +51,41 @@
 ### 📝 Product Details
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6a0056ff-7345-476e-ac63-95e679a37a4f" width="70%" />
+  <img src="https://github.com/user-attachments/assets/6a0056ff-7345-476e-ac63-95e679a37a4f" width="80%" />
 </p>
 
-<img width="1319" height="1276" alt="image" src="https://github.com/user-attachments/assets/89cd2677-547b-45bd-bbe6-c6f3c68eb48b" />
-<img width="1358" height="1073" alt="image" src="https://github.com/user-attachments/assets/1b9f1d7d-8ba2-460b-8e8e-f5f1193b0b47" />
+---
 
-<img width="3422" height="1273" alt="image" src="https://github.com/user-attachments/assets/d0604bac-c6c6-442c-ba84-05bb47849433" />
-<img width="3435" height="1275" alt="image" src="https://github.com/user-attachments/assets/c9daf05a-6e7b-4e72-ab6e-fc53518adcf1" />
+### 🛒 Cart
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/89cd2677-547b-45bd-bbe6-c6f3c68eb48b" width="80%" />
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1b9f1d7d-8ba2-460b-8e8e-f5f1193b0b47" width="80%" />
+</p>
 
-<img width="1460" height="997" alt="image" src="https://github.com/user-attachments/assets/49a1d4ef-18a2-48e5-aa43-54ebcdffff6e" />
+---
 
+### 🔐 Login
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d0604bac-c6c6-442c-ba84-05bb47849433" width="80%" />
+</p>
 
+---
+
+### 📝 Registration
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c9daf05a-6e7b-4e72-ab6e-fc53518adcf1"  width="80%" />
+</p>
+
+---
+
+### 👤 Personal Account
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/49a1d4ef-18a2-48e5-aa43-54ebcdffff6e" width="80%" />
+</p>
+
+---
 
 
 A modern full-stack furniture store built with Next.js, React, TypeScript, Tailwind CSS, Prisma, PostgreSQL, and Auth.js.
