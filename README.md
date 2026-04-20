@@ -1,134 +1,124 @@
-# North Atelier
+# Furniture E-Commerce
 
-Modern full-stack furniture e-commerce starter built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Auth.js, TanStack Query, Meilisearch, and Prisma ORM.
+A modern full-stack furniture store built with Next.js, React, TypeScript, Tailwind CSS, Prisma, PostgreSQL, and Auth.js.
 
-## Database Layer
+The project includes a polished storefront, authentication, cart and mock checkout flow, customer account area, and a protected admin panel for catalog management.
 
-The project now targets a local PostgreSQL database with Prisma ORM.
+## Tech Stack
 
-### Core models
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Prisma
+- PostgreSQL
+- Auth.js
 
-- `User`
-- `Category`
-- `Product`
-- `ProductImage`
-- `ProductVariant`
-- `CartItem`
-- `Order`
-- `OrderItem`
+Additional tooling used in the project includes TanStack Query, Zod, React Hook Form, Framer Motion, and Meilisearch for local search indexing.
 
-The schema is structured for realistic furniture commerce:
+## Features
 
-- products belong to categories
-- products support material, color, size, pricing, stock, images, and variants
-- cart items always reference a concrete purchasable variant/SKU
-- order items snapshot product and variant details for historical accuracy
-- all core tables include timestamps
-- Auth.js-compatible models remain included for future authentication wiring
+- Product catalog with filters and search
+- Product detail pages
+- Cart with guest and authenticated flows
+- Mock checkout with order creation
+- Authentication with protected account routes
+- Admin panel for products, categories, and orders
 
-## Setup
+## Getting Started
 
-1. Install dependencies:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Copy environment variables:
-
-```bash
-copy .env.example .env
-```
-
-3. Create a local PostgreSQL database, for example:
-
-```sql
-CREATE DATABASE north_atelier;
-```
-
-4. Update `DATABASE_URL` in `.env` if your local credentials differ.
-
-5. Generate the Prisma client:
-
-```bash
-npm run db:generate
-```
-
-6. Start Meilisearch locally:
-
-```bash
-docker compose -f docker-compose.meilisearch.yml up -d
-```
-
-## Migration and Seeding
-
-Create and apply your first development migration:
-
-```bash
-npm run db:migrate -- --name init_commerce_schema
-```
-
-If you want to sync schema changes without creating a migration:
-
-```bash
-npm run db:push
-```
-
-Seed the database with example furniture categories and products:
-
-```bash
-npm run db:seed
-```
-
-Index the active products into Meilisearch:
-
-```bash
-npm run search:index
-```
-
-Open Prisma Studio:
-
-```bash
-npm run db:studio
-```
-
-## Seed Contents
-
-The seed includes:
-
-- example admin and customer users
-- nested furniture categories
-- furniture products with realistic descriptions
-- product image records
-- multiple purchasable variants per product
-- a searchable Meilisearch-ready product catalog
-
-## Product Search
-
-The catalog now includes a Meilisearch-backed search experience with:
-
-- instant search suggestions
-- live result previews
-- search across product name, category, material, and description
-- URL-driven catalog search via the `q` query parameter
-
-Meilisearch defaults:
-
-- host: `http://127.0.0.1:7700`
-- master key: `local-master-key`
-
-If Meilisearch is temporarily unavailable, the catalog falls back to a Prisma text query so the page remains usable while local search is offline.
-
-## Useful Commands
+Start the development server:
 
 ```bash
 npm run dev
-npm run lint
-npm run typecheck
-npm run db:generate
-npm run db:migrate -- --name init_commerce_schema
-npm run db:push
-npm run db:seed
-npm run db:studio
+```
+
+The app will be available at `http://localhost:3000`.
+
+## Database Setup
+
+Generate the Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Create and apply your local database migration:
+
+```bash
+npx prisma migrate dev
+```
+
+Seed the database:
+
+```bash
+npx prisma db seed
+```
+
+Optional local search indexing:
+
+```bash
 npm run search:index
 ```
+
+## Environment Variables
+
+Create a local `.env` file based on `.env.example`.
+
+Required variables:
+
+```env
+DATABASE_URL=
+AUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+```
+
+Optional local search variables:
+
+```env
+MEILISEARCH_HOST=http://127.0.0.1:7700
+MEILISEARCH_MASTER_KEY=local-master-key
+```
+
+## Project Structure
+
+The repository is organized around the Next.js App Router and feature-focused modules:
+
+```text
+app/
+components/
+features/
+lib/
+prisma/
+public/
+```
+
+## Screenshots
+
+Screenshots can be added here for:
+
+- Homepage
+- Product page
+- Cart and checkout
+- Account dashboard
+- Admin panel
+
+## Future Improvements
+
+- Add automated integration and end-to-end test coverage
+- Add real payment integration
+- Improve inventory validation during cart and checkout
+- Add image upload support in the admin panel
+- Add CI/CD and deployment workflows
+
+## Development Notes
+
+- Authentication uses Auth.js with credentials-based login.
+- Checkout uses a local mock payment confirmation flow and does not connect to a real payment gateway.
+- Search indexing expects a local Meilisearch instance when `npm run search:index` is used.
