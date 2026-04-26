@@ -12,22 +12,14 @@
 
 ### 📱 Adaptive Design Preview
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/225d1342-66c3-4c6a-a93d-f8a63b04349e" width="80%" />
+  <img src="https://github.com/user-attachments/assets/225d1342-66c3-4c6a-a93d-f8a63b04349e" width="95%" />
 </p>
 
 ---
 
 ### 🖥️ Main Pages
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0b498a85-bb9b-4bfd-bfb1-5a1b70c9b6fe" width="80%" />
-</p>
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/b02b9c53-d2df-4f4f-88ae-a406a642a269" width="80%" />
-</p>
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/cf3a2500-e777-47d1-8408-0eea9bed1b86" width="80%" />
+  <img src="https://github.com/user-attachments/assets/07fdc0fa-358e-49f9-b4a1-1ad6116a7b26" width="95%" />
 </p>
 
 ---
@@ -35,7 +27,7 @@
 ### 🛒 Catalog
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a1f3dd56-92d0-4156-8143-8eb56e95b0d6" width="80%" />
+  <img  src="https://github.com/user-attachments/assets/a4588713-7af2-451a-83f1-4aaca8db137b" width="95%" />
 </p>
 
 ---
@@ -43,15 +35,8 @@
 ### 📦 Product Page
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0bfda695-2d87-48fd-8a32-b403fd3202fd" width="80%" />
-</p>
+  <img src="https://github.com/user-attachments/assets/10adb2d2-211d-42ca-85da-c4e6d2ebcc3b"  width="95%" />
 
----
-
-### 📝 Product Details
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/6a0056ff-7345-476e-ac63-95e679a37a4f" width="80%" />
 </p>
 
 ---
